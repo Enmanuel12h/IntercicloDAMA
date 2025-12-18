@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Actividad Widgets',
+      title: 'Navegación',
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
@@ -20,64 +20,76 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatefulWidget {
+// Home
+
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Home')),
+      body: Center(
+        child: ElevatedButton(
+          child: const Text('Ir a Perfil'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PerfilPage(),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
 
-class _HomePageState extends State<HomePage> {
-  int contador = 0;
+// Perfil
 
-  void incrementar() {
-    setState(() {
-      contador++;
-    });
-  }
+class PerfilPage extends StatelessWidget {
+  const PerfilPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ancho = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Actividad Práctica 1'),
-        centerTitle: true,
+        title: const Text('Perfil'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: incrementar,
-        child: const Icon(Icons.add),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Contador Interactivo',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              'Hola Enmanuel',
+              style: TextStyle(fontSize: 22),
             ),
-            const SizedBox(height: 16),
-            Text(
-              'Valor: $contador',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 24),
-            ancho < 600
-                ? Column(
-                    children: const [
-                      InfoCard(titulo: 'Sección 1'),
-                      SizedBox(height: 12),
-                      InfoCard(titulo: 'Sección 2'),
-                    ],
-                  )
-                : Row(
-                    children: const [
-                      Expanded(child: InfoCard(titulo: 'Sección 1')),
-                      SizedBox(width: 12),
-                      Expanded(child: InfoCard(titulo: 'Sección 2')),
-                    ],
+            const SizedBox(height: 20),
+            ElevatedButton(
+              child: const Text('Ver Detalle'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DetallePage(),
                   ),
+                );
+              },
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              child: const Text('Regresar'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
           ],
         ),
       ),
@@ -85,27 +97,41 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class InfoCard extends StatelessWidget {
-  final String titulo;
+//Detalle
 
-  const InfoCard({super.key, required this.titulo});
+class DetallePage extends StatelessWidget {
+  const DetallePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 120,
-      decoration: BoxDecoration(
-        color: Colors.indigo,
-        borderRadius: BorderRadius.circular(12),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Detalle'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
-      child: Center(
-        child: Text(
-          titulo,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Detalle del Producto',
+              style: TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 10),
+            const Text('Curso Flutter Avanzado'),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              child: const Text('Cerrar sesión'),
+              onPressed: () {
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+            ),
+          ],
         ),
       ),
     );
